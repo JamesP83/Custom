@@ -1,0 +1,121 @@
+{% if product.available %}
+<form action="/cart/add" method="post" class="clearfix product_form customizer__form" data-money-format="{{ shop.money_format }}" data-shop-currency="{{ shop.currency }}">
+    <div id="main-panel" class="panel panel--controls">
+        <div class="panel__header align-end">
+            <label id="in-cm-toggle"><input type="checkbox"/><span class="inactive active">in</span><span class="inactive">cm</span></label>
+        </div>
+
+        <div class="panel__section"></div>
+
+        <div class="panel__footer spread-out">
+            <div>
+                <p class="modal_price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                    <span class="current_price">$---.--</span>
+                </p>
+                <label>
+                    <input id="connectors-only-toggle" type="checkbox"/>
+                    <div>Connectors only</div>
+                </label>
+            </div>
+            <div>
+                <button id="customizer-buy" type="button">Purchase</button>
+                <button id="customizer-save" class="center-inner" type="button" >
+                    <span>Save/Share</span>
+                    <span>
+                        <i class="material-icons">favorite_border</i>
+                        <i class="material-icons">favorite</i>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel--create panel--hidden">
+        <i class="panel__back material-icons">arrow_back</i>
+        <div class="panel__title">
+            <h1>Save/Share</h1>
+            <h2>View your product anywhere, and share it with others!</h2>
+        </div>
+
+        <div class="panel__content">
+            <input id="project-title" type="text" placeholder="Name your project" required/>
+            <p>Letters, numbers, and spaces only.</p>
+            <input id="customer-name" type="text" placeholder="Your name (optional)"/>
+            <input id="customer-email" type="email" placeholder="Your email address" required/>
+            <p>Your email is safe with us. Read our privacy policy.<br />
+            <span><input id="marketing-opt-in" type="checkbox" checked/>Keep me up to date on news and exclusive offers</span></p>
+        </div>
+
+        <div class="panel__action purchase">
+            {% if settings.cart_action == 'reload_page' %}
+                <input type="hidden" name="return_to" value="back" />
+            {% elsif settings.cart_action == 'redirect_checkout' %}
+                <input type="hidden" name="return_to" value="/checkout" />
+            {% endif %}
+
+            {% capture add_to_cart_label %}{% if collection_handles contains 'pre-order' %}{{ 'collections.general.pre_order' | t }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endif %}{% endcapture %}
+            <button type="submit" name="add" class="action_button add_to_cart" data-label={{ add_to_cart_label | json }}>
+                <span class="text">{{ add_to_cart_label }}</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="panel panel--save-confirmation panel--hidden">
+        <div class="panel__title">
+            <h1>Project Saved!</h1>
+            <h2>Check your inbox for a link to <span class="project-name">your project</span></h2>
+        </div>
+        <div class="panel__content">
+            <p>You can also access it at the following link: </p>
+            <p><a href="{{ shop.secure_url }}/products/"></a></p>
+        </div>
+        <div class="panel__action">
+            <input name="product_id" type="hidden" />
+            <button type="submit" name="add" class="action_button add_to_cart" data-label={{ add_to_cart_label | json }}>
+                <span class="text">{{ add_to_cart_label }}</span>
+            </button>
+            <button class="panel__back" type="button">Back to Project</button>
+        </div>
+    </div>
+
+    <div class="panel panel--spinner panel--hidden">
+        <div class="panel__content">
+            <div class="spinner">
+                <div class="spinner__pulse"></div>
+                <div class="spinner__center"></div>
+                {{ 'logo-icon.png' | asset_url | img_tag }}
+            </div>
+            <h2>Creating project</h2>
+        </div>
+    </div>
+
+    <div class="panel panel--contact panel--hidden">
+        <i class="panel__back material-icons">arrow_back</i>
+        <div class="panel__title">
+            <h1>Contact Us</h1>
+            <h2>Got a question? Send us a message and we'll respond as soon as possible.</h2>
+        </div>
+        <div class="panel__content">
+            <input name="customer_name" type="text" placeholder="Your name" pattern="^[a-zA-Z ]*$"/>
+            <input name="customer_email" type="email" placeholder="Your email address"/>
+            <textarea name="message" placeholder="Tell us about your project or suggestion. Be sure to include any relevant dimensions or specifications."></textarea>
+            <p><input name="send_copy" type="checkbox"/>Send me a copy of this message</p>
+        </div>
+        <button type="button">Send</button>
+    </div>
+
+    <div class="panel panel--contact-confirmation panel--hidden">
+        <div class="panel__title">
+            <h1>Thank you for contacting us!</h1>
+        </div>
+        <div class="panel__content">
+            <h2>Your message has been sent. We will be in contact with you as soon as possible.</h2>
+        </div>
+        <div class="panel__action">
+            <button class="panel__back" type="button">Back to Project</button>
+        </div>
+    </div>
+</form>
+<p><em>*Actual width may differ by as much as 1 in.</em></p>
+<p>Need help or looking for something you don't see? <a>Drop us a line!</a></p>
+{% endif %}

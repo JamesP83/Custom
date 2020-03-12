@@ -1,0 +1,18 @@
+<div class="panel__row">
+    <div class="panel__col-1" title="{{{description}}}">
+        <span>{{label}}</span>
+        <span id="{{codeName}}" class="selected-option-text">{{defaultChoice}}</span>
+    </div>
+    <div class="panel__col-2 option-cell spread-out">
+        {{#each choices}}
+            <label class="center-inner" style="width:{{../pctWidth}}%" title="{{this.name}}">
+                <input type="radio" name="{{../codeName}}" value="{{this.name}}" data-param="{{../param}}" data-index-number="{{@index}}"
+                    {{#if this.isChecked}}
+                        checked
+                    {{/if}}
+                >
+                <img src="{{this.imgUrl}}">
+            </label>
+        {{/each}}
+    </div>
+</div>

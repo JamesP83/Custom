@@ -1,0 +1,11 @@
+<html>
+<body>
+<table class="body" style="border-collapse: collapse; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; max-width: 600px; margin-left: auto; margin-right: auto;">
+  <tr><td>
+    <h1 style="color: #555;"><%= @customer_name %> &lt;<%= params[:customer_email] %>&gt; sent you the following message:</h1>
+    <p style="color: #999; font-size: 14px; margin: 0; line-height: 1.25;"><%= params[:message] %></p>
+    <p style="color: #999; font-size: 14px; margin: 0; line-height: 1.25; border-top: 1px solid #555; margin-top: 1rem; padding-top: 1rem">This message was sent from a customizer page on the Modos Furniture website.</p>
+  </td><tr>
+</table>
+</body>
+</html>

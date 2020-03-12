@@ -1,0 +1,177 @@
+{{ 'customizer.scss.css' | asset_url | stylesheet_tag }}
+{{ 'spinner.scss.css' | asset_url | stylesheet_tag }}
+{{ 'customizer-model-controls.css' | asset_url | stylesheet_tag }}
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% if settings.product_sidebar %}
+{% include 'sidebar' %}
+<div class="twelve columns">
+{% else %}
+<div class="sixteen columns">
+{% endif %}
+    <div class="customizer">
+        <div class="customizer__loading-screen">
+            <div class="spinner fade-down fd-on-load">
+                <div class="spinner__pulse"></div>
+                <div class="spinner__center"></div>
+                {{ 'logo-icon.png' | asset_url | img_tag }}
+            </div>
+        </div>
+        <div class="section product_section clearfix customizer__content blur-me" itemscope itemtype="http://schema.org/Product">
+            <div class="{% if settings.product_sidebar %}seven{% else %}ten{% endif %} columns {% if product-images == blank %}{% if settings.product_images_position == 'left' %}alpha{% else %}omega{% endif %}{% endif %} {% if settings.product_images_position == 'right' %}mobile_only{% endif %}">
+                <label id="dimensions-toggle" class="hide-me"><input type="checkbox"/><i class="material-icons">straighten</i></label>
+                <iframe id="sd-iframe" style="width: 100%; padding-bottom: 20px; transition: 0.4s; height: calc(100% - 2.5rem)" class="add-multi-col-spacing" frameborder="0" src="https://www.shapediver.com/embed/modos25?mode=full&version=master_current&branding=false&viewerSettings=%7B%22showControls%22%3Afalse%2C%22allowFullscreen%22%3Afalse%2C%22showZoomControl%22%3Afalse%2C%22cameraRevertAtMouseUp%22%3Atrue%2C%22cameraAutoAdjust%22%3Atrue%7D"></iframe>
+                <div class="center-inner customizer__multicol-slider">
+                    <div class="multicol__reset">
+                        <i class="material-icons">restore</i>
+                    </div>
+                    <div class="slider-track"></div>
+                </div>
+            </div>
+            <div class="{% if settings.product_sidebar %}five{% else %}six{% endif %} columns {% if settings.product_images_position == 'left' %}omega{% else %}alpha{% endif %}">
+
+                {% assign collection_handles = product.collections | map: 'handle' %}
+                {% assign variant = product.selected_or_first_available_variant %}
+                <!-- <h1 class="product_name" itemprop="name">{{ product.title }}</h1> -->
+
+                {% if settings.enable_shopify_product_badges %}
+                <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+                {% endif %}
+
+                {% if settings.size_chart != blank %}
+                <a href="#size-chart" class="lightbox size_chart">{{ 'products.product.size_chart' | t }} <span class="icon-right-arrow"></span></a>
+                {% endif %}
+
+                {% if settings.product_description_position == "top" %}
+                {% if product.description != blank %}
+                 <div class="description" itemprop="description">
+                   {{ product.description | split: '<!-- split -->' | first }}
+                 </div>
+                {% endif %}
+                {% endif %}
+
+                {% unless collection_handles contains 'coming-soon' %}
+                    {% include 'customizer-form' with 'product' %}
+                {% endunless %}
+
+                {% if settings.product_description_position == "bottom" %}
+                {% if product.description != blank %}
+                 <div class="description" itemprop="description">
+                  {{ product.description | split: '<!-- split -->' | first }}
+                 </div>
+                {% endif %}
+                {% endif %}
+
+                {% if settings.enable_shopify_review_comments and settings.review_position == "top" %}
+                <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
+                {% endif %}
+
+                <!-- <div class="meta">
+                {% if settings.display_social_buttons %}
+                  <share-button></share-button>
+                {% endif %}
+
+                {% if settings.display_collections %}
+                  <p>
+                    <span class="label">{{ 'products.product.collections' | t }}:</span>
+                    <span>
+                     {% for col in product.collections %}
+                       <a href="{{ col.url }}" title="{{ col.title }}">{{ col.title }}</a>{% unless forloop.last %},{% endunless %}
+                     {% endfor %}
+                   </span>
+                 </p>
+                {% endif %}
+
+                {% if settings.display_tags %}
+                   <p>
+                     {% for tag in product.tags %}
+                       {% if forloop.first %}
+                         <span class="label">{{ 'products.product.tags' | t }}:</span>
+                       {% endif %}
+
+                       {% unless tag contains 'meta-related-collection-' %}
+                         <span>
+                           <a href="/collections/{% if collection %}{{ collection.handle }}{% else %}all{% endif %}/{{ tag | handle }}" title="{{ 'products.product.products_tagged' | t: tag: tag }}">{{ tag }}</a>{% unless forloop.last %},{% endunless %}
+                         </span>
+                       {% endunless %}
+                     {% endfor %}
+                   </p>
+                {% endif %}
+
+                {% if settings.display_type %}
+                  <p>
+                    <span class="label">{{ 'products.product.product_types' | t }}:</span>
+                    <span>{{ product.type | link_to_type }}</span>
+                  </p>
+                {% endif %}
+                </div> -->
+            </div>
+
+            {% if settings.product_images_position == 'right' %}
+                <div class="{% if settings.product_sidebar %}seven{% else %}nine{% endif %} columns {% if product-images == blank %}{% if settings.product_images_position == 'left' %}alpha{% else %}omega{% endif %}{% endif %} mobile_hidden">
+                {% include 'product-images' %}
+                </div>
+            {% endif %}
+
+        </div>
+
+        {% if product.description contains "<!-- split -->"  %}
+        <br class="clear" />
+        <div class="section clearfix">
+            <div class="description">
+            {{ product.description | split: '<!-- split -->' | last }}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if settings.enable_shopify_review_comments and settings.review_position == "bottom" %}
+            <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
+        {% endif %}
+  </div>
+
+
+  {% if settings.display_related_products %}
+    {% capture limit %}{{ settings.products_per_row | plus: 1 }}{% endcapture %}
+
+    {% if collection and collection.all_products_count > 1 %}
+      {% assign col = collection.handle %}
+    {% else %}
+      {% assign col = product.collections.last.handle %}
+    {% endif %}
+
+    {% for tag in product.tags %}
+      {% if tag contains 'meta-related-collection-' %}
+        {% assign related_collection_handle = tag | remove: 'meta-related-collection-' %}
+        {% if collections[related_collection_handle].all_products_count > 0 %}
+          {% assign col = related_collection_handle %}
+          {% assign collection = collections[col] %}
+          {% capture limit %}{{ collection.products_count | plus: 1 }}{% endcapture %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+
+    {% if col and collections[col].all_products_count > 0 %}
+      {% if collections[col].all_products_count != 1 or collections[col].products.first.id != product.id %}
+        <br class="clear" />
+        <h4 class="title center">{{ 'products.product.related_items' | t }}</h4>
+        <div class="feature_divider"></div>
+
+        {% assign skip_product = product %}
+        {% assign products = collections[col].products %}
+        {% assign products_per_row = settings.products_per_row %}
+        {% include 'product-loop' with settings.product_sidebar %}
+      {% endif %}
+    {% endif %}
+  {% endif %}
+</div>
+<script>
+    {% if product.description != blank %}
+        var inputDefs = JSON.parse($("#input-defs").text());
+    {% else %}
+        var inputDefs = {};
+    {% endif %}
+</script>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.runtime.min.js"></script>
+{{ 'handlebars-templates.js' | asset_url | script_tag }}
+{{ 'customizer-main.js' | asset_url | script_tag }}
+{{ 'customizer-init.js' | asset_url | script_tag }}
+{{ 'customizer-controls.js' | asset_url | script_tag }}

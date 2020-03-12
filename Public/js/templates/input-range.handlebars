@@ -1,0 +1,14 @@
+<div class="panel__row">
+    <div class="panel__col-1" title="{{{description}}}">{{label}}</div>
+    <div class="panel__col-2 slider-container">
+        <div class="slider-track">
+            <div></div>
+        </div>
+        <output for="{{param}}" class="{{output-class}}"></output>
+        <input type="range" data-param="{{param}}"
+            {{#each props}}
+                {{@key}} = "{{this}}"
+            {{/each}}
+        >
+    </div>
+</div>

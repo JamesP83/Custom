@@ -1,0 +1,63 @@
+/* Mixins & Variables*/
+$blue: #17A2D4;
+@mixin center-inner() {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+.spinner {
+    @include center-inner();
+    width: 20vh;
+    height: 20vh;
+    position: relative;
+    transition: 1.5s;
+    transform: translateY(-25%);
+    opacity: 0;
+}
+
+.fd-on-load {
+    animation: fade-down 1.5s ease-in-out;
+}
+
+@keyframes fade-down {
+    from {
+        opacity: 0;
+        transform: translateY(-25%);
+    } to {
+        opacity: 1;
+        -webkit-transform: translateY(0);
+    }
+}
+
+.fade-down {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.spinner > * {
+    position: absolute;
+    display: block;
+}
+
+.spinner > .spinner__center, .spinner > .spinner__pulse {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: $blue;
+}
+
+.fade-down > .spinner__pulse {
+  animation: sk-scaleout 1.5s infinite ease-in-out;
+}
+
+@keyframes sk-scaleout {
+  from {
+    transform: scale(1);
+    opacity: 0.5
+  } to {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}

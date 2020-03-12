@@ -1,0 +1,12 @@
+<div class="multi-col-slider center-inner">
+    <div class="multi-col-thumb center-inner">
+        <i class="material-icons">arrow_left</i>
+        <span></span>
+        <i class="material-icons">arrow_right</i>
+    </div>
+    <input type="range" class="multi-col-input" data-param="{{param}}"
+        {{#each props}}
+            {{@key}} = "{{this}}"
+        {{/each}}
+    >
+</div>

@@ -1,0 +1,406 @@
+/* Utility classes */
+.hide-me {
+    display: none;
+}
+
+.fade-me {
+    opacity: 0;
+}
+
+.spread-out {
+    display: flex;
+    justify-content: space-between;
+}
+
+.align-end {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.center-inner {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+.blur-me {
+    filter: blur(0.75rem);
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+
+/* Prevent highlighting */
+#main-panel label {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+
+#main-panel input {
+    display: none;
+}
+
+#main-panel input[type="range"] {
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.customizer__form .inactive {
+    border: 1px solid #dbdddf;
+    color: #dbdddf;
+}
+
+.customizer__form .active {
+    background-color: #17A2D4;
+    border: 1px solid #17A2D4;
+    color: white;
+}
+
+
+/* Dimension-toggle aka ruler icon */
+/* Not fully implemented due to buggy input type, but should be able to implement now */
+#dimensions-toggle {
+    position: absolute;
+    top: 20px;
+    right: 4px;
+    cursor: pointer;
+}
+
+#dimensions-toggle input {
+    display: none;
+}
+
+#dimensions-toggle i {
+    padding: 2px;
+    color: #dbdddf;
+}
+
+#dimensions-toggle input:checked + i {
+    color: #17A2D4;
+}
+
+
+/* Top row */
+#in-cm-toggle {
+    cursor: pointer;
+    display: flex;
+    margin-left: 8px;
+}
+
+#in-cm-toggle span {
+    width: 1.5rem;
+    padding: 2px;
+    text-align: center;
+}
+
+
+/* Slider stuff */
+.slider-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.slider-container .slider-track {
+    position: absolute;
+    height: 5px;
+    width: 100%;
+    background-color: #dbdddf;
+}
+
+.slider-container .slider-track > div {
+    height: 100%;
+    background-color: #17A2D4;
+}
+
+.slider-container output {
+    position: relative;
+    transform: translateX(-50%);
+    width: 50px;
+    text-align: center;
+    background-color: white;
+    border: 1px solid #a6acb0;
+    font-weight: normal;
+}
+
+.in-slider::after {
+    content: "\"";
+}
+
+.cm-slider::after {
+    content: "cm";
+}
+
+.slider-container input {
+    -webkit-appearance: none;   /*needed to customize thumb*/
+    appearance: none;           /*needed to customize thumb*/
+    height: auto;
+    min-height: auto;
+    position: absolute;
+    opacity: 0;
+}
+
+.slider-container input::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    cursor: pointer;
+    width: 50px; /* should be same width as output */
+    height: 21.5px;
+    background-color: red;
+    padding: 1px;
+}
+
+
+/* Option stuff */
+.selected-option-text {
+    color: #17A2D4;
+    font-weight: normal;
+    font-size: .8rem;
+}
+
+.option-cell img {
+    box-sizing: border-box;
+    border: 1px solid #dbdddf;
+    padding: 5%;
+    transition: .25s;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.option-cell label:hover img {
+    opacity: 1;
+}
+
+.option-cell input:checked ~ img {
+    border-color: #17A2D4;
+    opacity: 1;
+}
+
+
+/* Bottom row */
+p.modal_price {
+    margin-bottom: 0;
+}
+
+#customizer-save, #connectors-only-toggle + div {
+    margin-top: 4px;
+    border: 1px solid #dbdddf;
+    padding: 4px;
+    width: 100%;
+    background-color: transparent;
+    font-size: .8rem;
+    color: #a6acb0;
+}
+
+#connectors-only-toggle + div {
+    color: #dbdddf;
+    box-sizing: border-box;
+    line-height: normal;
+    border-radius: 2px;
+    transition: 0.1s;
+    cursor: pointer;
+}
+
+#connectors-only-toggle:checked + div {
+    border-color: #17A2D4;
+    background-color: #17A2D4;
+    color: #ffffff;
+}
+
+#customizer-save:hover {
+    color: #17A2D4;
+    border-color: #17A2D4;
+}
+
+#customizer-save span:nth-of-type(2) {
+    margin: 1px -2px -2px 2px;
+    position: relative;
+}
+
+#customizer-save i {
+    font-size: .9rem;
+}
+
+#customizer-save i:nth-of-type(2) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: .1s;
+    opacity: 0;
+    color: #17A2D4;
+}
+
+#customizer-save:hover i:nth-of-type(2) {
+    opacity: 1;
+}
+
+
+/* Mulit-col-slider stuff */
+.customizer__multicol-slider {
+    position: absolute;
+    height: 1.25rem;
+    border-left: 1px solid #a6acb0;
+    border-right: 1px solid #a6acb0;
+    transition: 0.6s;
+    opacity: 1;
+    width: 100%;
+    bottom: 20px;
+}
+
+.customizer .no-height {
+    opacity: 0 !important;
+    bottom: 33% !important;
+}
+
+.add-multi-col-spacing {
+    margin-bottom: 1.25rem;
+}
+
+.customizer__multicol-slider .slider-track {
+    width: 100%;
+    height: 5px;
+    background-color: #17A2D4;
+}
+
+.customizer__multicol-slider .multi-col-input {
+    margin: 0;
+    min-height: 0;
+    height: 0;
+    -webkit-appearance: none;
+    appearance: none;
+    position: absolute;
+    pointer-events: none;
+    border: 0 !important;
+    padding: 0;
+    background-color: transparent;
+    box-sizing: border-box;
+    z-index: 1;
+    right: -13px; /* half thumb width */
+    width: calc(100% + 26px)
+}
+
+.customizer__multicol-slider .multi-col-input::-webkit-slider-thumb {
+    pointer-events: all;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 26px;
+    height: 1rem;
+    box-sizing: border-box;
+    cursor: ew-resize;
+}
+
+.customizer__multicol-slider .multi-col-slider {
+    position: absolute;
+    height: 10px;
+}
+
+.customizer__multicol-slider .multi-col-thumb {
+    position: absolute;
+    border-radius: 50%;
+    transition: box-shadow 0.4s;
+}
+
+.multi-col-slider i {
+    font-size: 3rem;
+    margin: -20px;
+    z-index: 1;
+    color: white;
+    text-shadow: -1px 0 #a6acb0, 0 1px #a6acb0, 1px 0 #a6acb0, 0 -1px #a6acb0;
+}
+
+.customizer__multicol-slider .multi-col-slider span {
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    transition: 0.4s;
+}
+
+.customizer__multicol-slider .multi-col-highlight {
+    box-shadow: 0 0 20px 10px #FFF7B6;
+}
+
+.customizer__multicol-slider .multi-col-highlight span {
+    background-color: #FFF7B6;
+}
+
+
+/* Multicol reset */
+.multicol__reset {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    padding: 8px;
+    transform: translateY(-100%);
+    cursor: pointer;
+}
+
+.multicol__reset:hover {
+    color: #17A2D4;
+}
+
+
+/* Multicol toggle stuff */
+.panel__row--multicol-toggle span {
+    font-weight: bold;
+}
+
+.panel__row--multicol-toggle label {
+    width: 60px;
+    height: 23.5px;
+    position: relative;
+    display: flex;
+    cursor: pointer;
+}
+
+.panel__row--multicol-toggle label > * {
+    transition: .4s ease-in-out;
+}
+
+.panel__row--multicol-toggle .toggle-bg {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #dbdddf;
+    color: #dbdddf;
+    box-sizing: border-box;
+}
+
+.panel__row--multicol-toggle .toggle-bg:after {
+    position: absolute;
+    transform: translateX(-50%);
+    content: "Off";
+    left: calc(50% + 0.5rem);
+    transition: .375s ease-in-out, color 0s;
+}
+
+.panel__row--multicol-toggle input:checked + .toggle-bg {
+    background-color: #17A2D4;
+    border-color: #17A2D4;
+    color: white;
+}
+
+.panel__row--multicol-toggle input:checked + .toggle-bg:after {
+    content: "On";
+    left: calc(50% - 0.5rem);
+}
+
+.panel__row--multicol-toggle .toggle-inner {
+    height: 23.5px;
+    width: 1rem;
+    border: 1px solid #a6acb0;
+    position: absolute;
+    background-color: white;
+    box-sizing: border-box;
+    left: 0;
+}
+
+.panel__row--multicol-toggle input:checked ~ .toggle-inner {
+    left: 100%;
+    transform: translateX(-100%);
+}

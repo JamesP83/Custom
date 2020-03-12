@@ -1,0 +1,102 @@
+<div style="font-family: 'Graphik Web'; font-weight: 100;">
+<div style="width: 100%; height: 450px; overflow: hidden;"><iframe id="sd-iframe" style="width: 80%; height: 100%;" frameborder="0" src="https://www.shapediver.com/embed/tease-cube-1?mode=full&amp;viewerSettings=%7B%22showControls%22%3Afalse%7D"> </iframe>
+<div id="sd-ext-controls" style="background: #f9f9f9; float: right; width: 15%; height: 450px; right: 0; padding-left: 1%; padding-right: 1%; padding-top: 20px;"></div>
+</div>
+</div>
+<script>// <![CDATA[
+//once the iframe is loaded, we initialize our external controls
+ $('#sd-iframe').on('load', function() {
+
+   // request parameter definitions
+   payload = {
+     command: "getParameterDefinitions"
+   };
+   this.contentWindow.postMessage(payload, "https://www.shapediver.com");
+
+ });
+
+ // remember if we already have our parameter definitions
+ var blnHaveParameterDefinitions = false;
+
+ // remember decimal places for our sliders
+ var decimalPlacesForParameters = {};
+
+ function receiveMessage(event) {
+   var origin = event.origin || event.originalEvent.origin; // For Chrome, the origin property is in the event.originalEvent object.
+   var data = event.data || event.originalEvent.data;
+   var source = event.source || event.originalEvent.source;
+
+   // for security reasons we accept only messages from shapediver.com
+   if (origin != "https://www.shapediver.com" && origin != "https://local.shapediver.com")
+     return;
+
+   console.log("Cube test page received the following message from origin " + origin);
+   console.log(data);
+
+   // we expect a JSON object with two values: a command name and a result
+
+   if (!data.hasOwnProperty("command")) {
+     console.warn("Message did not contain command name. Aborting.")
+     return;
+   }
+
+   /// at this point the result might be undefined for the command setParameterValue in many cases, this is being fixed asap
+   if (!data.hasOwnProperty("result")) {
+     console.warn("Message did not contain command result. Aborting.")
+     return;
+   }
+
+   var commandName = data.command;
+   var result = data.result;
+
+   // if we got parameter definitions for the first time, set up our controls
+
+   if (commandName == "getParameterDefinitions") {
+
+     if (!blnHaveParameterDefinitions) {
+
+       for (var param in result) {
+
+         // create sliders - since standard html range inputs allow only integer steps,
+         // we multiply the min and max values with 10^decimalPlaces so we can accomodate values with smaller steps
+         $("#sd-ext-controls").append("<div>" + result[param].visibleName + "<p><input id=\"" + param + "\"  type=\"range\" name=\"" + param + "\" min=\"" + result[param].min * Math.pow(10, result[param].decimalPlaces) + "\" max=\"" + result[param].max * Math.pow(10, result[param].decimalPlaces) + "\"></div></p>");
+
+         // event watcher for slider value changes - if the user changes a value,
+         // send the info to the viewer
+         $("#" + param).change(function() {
+
+           // here we divide the new value by 10^decimalplaces to get the correct value for the update
+           var payload = {
+             command: "setParameterValue",
+             arguments: [this.id, $("#" + this.id).val() / Math.pow(10, result[param].decimalPlaces)]
+           };
+           source.postMessage(payload, "https://www.shapediver.com");
+         });
+
+         // remember decimal places
+         decimalPlacesForParameters[param] = result[param].decimalPlaces;
+       }
+
+       // make sure to get initial values from viewer to set sliders correctly
+       var payload = {
+         command: "getParameterValues"
+       };
+       source.postMessage(payload, origin);
+
+       blnHaveParameterDefinitions = true;
+     }
+   }
+
+   // if we get informed about current parameter values, we set our sliders accordingly
+
+   if (commandName == "getParameterValues") {
+     for (var param in result) {
+       console.log("Setting parameter " + param + " to " + result[param]);
+       $("#" + param).val(result[param] * Math.pow(10, decimalPlacesForParameters[param]));
+     }
+   }
+ }
+
+// event watcher for incoming messages from the viewer
+ $(window).on("message", receiveMessage);
+// ]]></script>

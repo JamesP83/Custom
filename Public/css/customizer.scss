@@ -1,0 +1,223 @@
+/* Mixins & Variables*/
+$bg-gray: #f2f2f2;
+$light-gray: #dbdddf;
+$dark-gray: #a6acb0;
+$white: #ffffff;
+$blue: #17A2D4;
+
+@mixin center-inner() {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+
+/* Customizer */
+.customizer {
+    height: 80vh;
+    overflow: hidden;
+    position: relative;
+}
+
+.customizer__loading-screen {
+    @include center-inner();
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: $bg-gray;
+    z-index: 100;
+}
+
+.customizer__content {
+    display: flex;
+    flex-wrap: wrap;
+    transition: 2s;
+
+    & > div:nth-of-type(1) {
+        position: relative;
+        /* Used to maintain center position of iframe */
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+    }
+}
+
+.customizer__form {
+    font-size: .875rem;
+    border: 1px solid $light-gray;
+    position: relative;
+    overflow: hidden;
+    background-color: $dark-gray;
+    margin: 0;
+
+    & ~ p {
+        margin: 4px 2px 8px;
+    }
+    & ~ p:nth-last-of-type(1) {
+        margin-bottom: 20px;
+    }
+    & ~ p a {
+        cursor: pointer;
+    }
+}
+
+
+/* Form content */
+%panel {
+    box-sizing: border-box;
+    border: 1px solid $light-gray;
+    background-color: $white;
+    padding: 16px;
+}
+
+
+/* Main panel stuff */
+.panel--controls {
+    @extend %panel;
+    transition: 1s;
+    cursor: default;
+
+    .panel__header {
+        padding: 4px 4px 12px;
+    }
+    .panel__section {
+        border-bottom: 1px solid #a6acb0;
+        padding: 8px 4px;
+    }
+    .panel__footer {
+        padding: 12px 4px 4px;
+    }
+}
+
+.panel__row {
+    display: flex; /* To position columns next to each other */
+    padding: 4px 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.panel__col-1 {
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+    width: 100px;
+    font-weight: bold;
+}
+
+.panel__col-2 {
+    width: 100%;
+}
+
+
+/* Side panel stuff */
+.panel--hidden {
+    transform: translateX(100%);
+}
+
+.panel--dark {
+    filter: brightness(0.5) blur(0.5rem);
+}
+
+%panel--side {
+    @extend %panel;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    transition: 0.75s ease-in-out;
+
+    i {
+        position: absolute;
+        top: 0;
+        left: 16px;
+        padding: 4px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+    i:hover {
+        color: $blue;
+        background-color: rgba(23, 162, 212, 0.1);
+    }
+
+    & > * {
+        margin: 1rem 0;
+    }
+
+    h1, h2 {
+        margin: 0;
+    }
+    h2 {
+        font-size: 1rem;
+    }
+    p {
+        font-size: .8rem;
+        margin: 0 0 .75rem;
+    }
+    div > p:nth-last-of-type(1) {
+        margin-bottom: 0;
+    }
+
+    input[type="text"], input[type="email"], textarea, button {
+        width: 300px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    input::placeholder, textarea::placeholder {
+        color: $light-gray;
+    }
+    input:focus, textarea:focus {
+        border-color: $blue;
+    }
+    input + input, input + textarea, textarea+p, button + button {
+        margin-top: .5rem !important;
+    }
+}
+
+.panel--create {
+    @extend %panel--side;
+}
+
+.panel--spinner {
+    @extend %panel--side;
+    @include center-inner();
+    cursor: progress;
+
+    h2 {
+        margin: 5vh 0 0;
+    }
+}
+
+.panel--save-confirmation {
+    @extend %panel--side;
+    h2 span {
+        font-weight: bold;
+    }
+    h2 span::before, h2 span::after {
+        content: "\"";
+    }
+
+    button.panel__back {
+        border: 2px solid $blue;
+        color: $blue;
+        background-color: $white;
+    }
+    button.panel__back:hover {
+        background-color: $bg-gray;
+    }
+}
+
+.panel--contact, .panel--contact-confirmation {
+    @extend %panel--side;
+    textarea {
+        height: 10rem;
+    }
+}
+
+.panel__input--invalid {
+    border-color: red !important;
+}

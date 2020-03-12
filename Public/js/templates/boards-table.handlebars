@@ -1,0 +1,21 @@
+<strong>Board Dimensions</strong>
+<table style="margin-bottom: 0">
+<thead>
+    <tr>
+        <th>Name</th>
+        <th>Length</th>
+        <th>Width</th>
+        <th>Count</th>
+    </tr>
+</thead>
+<tbody>
+    {{#each boardArr}}
+        <tr>
+            {{#each this}}
+                <td>{{this}}</td>
+            {{/each}}
+        </tr>
+    {{/each}}
+</tbody>
+</table>
+<em>*Actual board dimensions may differ by as much as 1/8 in.</em>

@@ -1,0 +1,11 @@
+<html>
+<body>
+<table class="body" style="border-collapse: collapse; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; max-width: 600px; margin-left: auto; margin-right: auto;">
+  <tr><td>
+    <h1 style="color: #555;">You sent the following message to Modos Furniture:</h1>
+    <p style="color: #999; font-size: 14px; margin: 0; line-height: 1.25;"><%= params[:message] %></p>
+    <p style="color: #999; font-size: 14px; margin: 0; line-height: 1.25; border-top: 1px solid #555; margin-top: 1rem; padding-top: 1rem">You are receiving this email because you contacted Modos Furniture and elected to receive a copy of your message. If you have any questions or concerns, please reply to this email or contact us at <a href="mailto:<%= @contact_email %>" style="color: #1990C6; font-size: 14px;"><%= @contact_email %></a></p>
+  </td><tr>
+</table>
+</body>
+</html>
